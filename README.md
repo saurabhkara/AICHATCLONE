@@ -24,3 +24,7 @@
 - 🧠 **OpenAI API Integration** – Sending user messages and displaying AI-generated replies.
 - 💬 **Chat History** – Persisting full conversations across sessions.
 - 📝 **Markdown Rendering** – Formatting AI responses.
+
+---
+
+npm expo customize
