@@ -28,3 +28,6 @@
 ---
 
 npm expo customize
+npx expo install --fix
+
+https://notjust.notion.site/208b0ec93c5a80a4802ada76ad59833c?v=208b0ec93c5a8077a7d2000cc8c2139a
