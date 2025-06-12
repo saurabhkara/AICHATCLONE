@@ -5,7 +5,7 @@ export default function Page() {
       <View className="flex-1 bg-red-600 ">
         <Text className="text-primary bg-slate-600">Hello Saurabh</Text>
       </View>
-      <StatusBar barStyle={"dark-content"} />
+      <StatusBar barStyle={"light-content"} />
     </>
   );
 }
