@@ -24,7 +24,7 @@ export default function RootLayout() {
           screenOptions={{
             headerTitle: "",
             headerStyle: { backgroundColor: "black" },
-            drawerActiveTintColor: "blue",
+            drawerActiveTintColor: "white",
             drawerInactiveTintColor: "white",
             drawerStyle: {
               borderRightColor: "gray",
@@ -39,6 +39,12 @@ export default function RootLayout() {
               drawerIcon: () => {
                 return <FontAwesome5 name="atom" size={24} color="white" />;
               },
+            }}
+          />
+          <Drawer.Screen
+            name="chat/[id]"
+            options={{
+              drawerItemStyle: { display: "none" },
             }}
           />
         </Drawer>
