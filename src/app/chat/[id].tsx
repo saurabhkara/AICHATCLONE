@@ -9,12 +9,16 @@ export default function ChatRoom() {
   const { id } = useLocalSearchParams();
   const chatItem = chatHistory.find((item) => item.id === id);
   const insets = useSafeAreaInsets();
+
+  const handleOnSend = (message: string) => {
+    console.log("message", message);
+  };
   return (
     <View style={{ flex: 1, marginBottom: insets.bottom }}>
-      <View style={{ flex: 1, backgroundColor: "red" }}>
+      <View style={{ flex: 1 }}>
         <Text style={{ color: "white" }}>Chat Room {chatItem?.title}</Text>
       </View>
-      <TextInputComp />
+      <TextInputComp onSend={handleOnSend} isLoading={false} />
     </View>
   );
 }
