@@ -9,7 +9,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useState } from "react";
 
 interface IPropType {
-  onSend: (message: string) => void;
+  onSend: (message: string) => Promise<void>;
   isLoading: boolean;
 }
 
