@@ -9,7 +9,9 @@ export default function Page() {
   const createNewChat = useChatStore((state) => state.createNewChat);
   const addNewMessage = useChatStore((state) => state.addNewMessage);
 
+  let dataR;
   const handleMessageTitle = async (message: string) => {
+    console.log(777);
     const chatId = createNewChat(message.substring(0, 50));
     addNewMessage(chatId, {
       id: Date.now().toString(),
@@ -17,6 +19,14 @@ export default function Page() {
       message: message,
     });
     router.push(`/chat/${chatId}`);
+
+    try {
+      const response = await fetch("http://localhost:8081/api/chat");
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Chat error:", error);
+    }
   };
 
   return (
