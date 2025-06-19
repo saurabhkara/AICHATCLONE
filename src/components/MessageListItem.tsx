@@ -10,7 +10,6 @@ interface IMessageListItem {
 export default function MessageListItem({ item }: IMessageListItem) {
   const { message, role } = item;
   const iUser = role === "user";
-  console.log(iUser);
   return (
     <View
       style={{
