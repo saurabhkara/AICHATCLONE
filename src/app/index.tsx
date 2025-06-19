@@ -21,7 +21,7 @@ export default function Page() {
     router.push(`/chat/${chatId}`);
 
     try {
-      const response = await fetch("http://localhost:8081/api/chat");
+      const response = await fetch("/api/chat");
       const data = await response.json();
       console.log(data);
     } catch (error) {
