@@ -13,6 +13,7 @@ export default function Page() {
   const handleMessageTitle = async (message: string) => {
     console.log(777);
     const chatId = createNewChat(message.substring(0, 50));
+
     addNewMessage(chatId, {
       id: Date.now().toString(),
       role: "user",
@@ -21,9 +22,25 @@ export default function Page() {
     router.push(`/chat/${chatId}`);
 
     try {
-      const response = await fetch("/api/chat");
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+      });
       const data = await response.json();
-      console.log(data);
+
+      if (!response.ok) {
+        throw new Error(data.error);
+      }
+
+      const aiResponseMessage = {
+        id: Date.now().toString(),
+        message: data.responseMessage,
+        responseId: data.responseId,
+        role: "assistant" as const,
+      };
+
+      addNewMessage(chatId, aiResponseMessage);
     } catch (error) {
       console.error("Chat error:", error);
     }

@@ -26,6 +26,35 @@ export default function ChatRoom() {
       role: "user",
       message: message,
     });
+    const previousResponseId =
+      chatItem.messages[chatItem.messages.length - 1]?.responseId;
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message,
+          previousResponseId,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error);
+      }
+
+      const aiResponseMessage = {
+        id: Date.now().toString(),
+        message: data.responseMessage,
+        responseId: data.responseId,
+        role: "assistant" as const,
+      };
+
+      addNewMessage(chatItem.id, aiResponseMessage);
+    } catch (error) {
+      console.error("Chat error:", error);
+    }
   };
 
   return (
