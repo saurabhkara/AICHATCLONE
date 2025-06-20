@@ -1,4 +1,4 @@
-import { View, Text, TextInput, FlatList } from "react-native";
+import { View, FlatList } from "react-native";
 import React from "react";
 import { useLocalSearchParams } from "expo-router";
 import chatHistory from "@assets/data/chatHistory.json";
@@ -6,16 +6,24 @@ import TextInputComp from "@/components/TextInputComp";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import MessageListItem from "@/components/MessageListItem";
 import { useChatStore } from "@/store/chatstore";
+import { useRef, useEffect } from "react";
 
 export default function ChatRoom() {
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams();
+  const flatlstRef = useRef<FlatList | null>(null);
 
   const chatItem = useChatStore((state) =>
     state.chatHistory.find((item) => item.id === id)
   );
   const addNewMessage = useChatStore((state) => state.addNewMessage);
 
+  useEffect(() => {
+    let sid = setTimeout(() => {
+      flatlstRef.current?.scrollToEnd({ animated: true });
+    }, 100);
+    return () => clearTimeout(sid);
+  }, [chatItem?.messages]);
   const handleOnSend = async (message: string) => {
     if (!chatItem) {
       return;
@@ -65,6 +73,7 @@ export default function ChatRoom() {
           renderItem={({ item, index }) => (
             <MessageListItem item={item} key={item.id} />
           )}
+          ref={flatlstRef}
         />
       </View>
       <TextInputComp onSend={handleOnSend} isLoading={false} />
