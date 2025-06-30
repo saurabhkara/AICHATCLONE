@@ -8,10 +8,12 @@ export default function Page() {
   const insets = useSafeAreaInsets();
   const createNewChat = useChatStore((state) => state.createNewChat);
   const addNewMessage = useChatStore((state) => state.addNewMessage);
+  const setIsWaitingForResponse = useChatStore(
+    (state) => state.setIsWaitingForResponse
+  );
 
-  let dataR;
   const handleMessageTitle = async (message: string) => {
-    console.log(777);
+    setIsWaitingForResponse(true);
     const chatId = createNewChat(message.substring(0, 50));
 
     addNewMessage(chatId, {
@@ -43,6 +45,8 @@ export default function Page() {
       addNewMessage(chatId, aiResponseMessage);
     } catch (error) {
       console.error("Chat error:", error);
+    } finally {
+      setIsWaitingForResponse(false);
     }
   };
 

@@ -1,4 +1,4 @@
-import { View, FlatList } from "react-native";
+import { View, FlatList, Text } from "react-native";
 import React from "react";
 import { useLocalSearchParams } from "expo-router";
 import chatHistory from "@assets/data/chatHistory.json";
@@ -17,6 +17,12 @@ export default function ChatRoom() {
     state.chatHistory.find((item) => item.id === id)
   );
   const addNewMessage = useChatStore((state) => state.addNewMessage);
+  const isWaitingForResponse = useChatStore(
+    (state) => state.isWaitingForResponse
+  );
+  const setIsWaitingForResponse = useChatStore(
+    (state) => state.setIsWaitingForResponse
+  );
 
   useEffect(() => {
     let sid = setTimeout(() => {
@@ -29,7 +35,7 @@ export default function ChatRoom() {
     if (!chatItem) {
       return;
     }
-
+    setIsWaitingForResponse(true);
     addNewMessage(chatItem?.id, {
       id: Date.now().toString(),
       role: "user",
@@ -65,6 +71,8 @@ export default function ChatRoom() {
       addNewMessage(chatItem.id, aiResponseMessage);
     } catch (error) {
       console.error("Chat error:", error);
+    } finally {
+      setIsWaitingForResponse(false);
     }
   };
 
@@ -77,6 +85,11 @@ export default function ChatRoom() {
             <MessageListItem item={item} key={item.id} />
           )}
           ref={flatlstRef}
+          ListFooterComponent={() =>
+            isWaitingForResponse && (
+              <Text style={{ color: "white" }}>Waiting for response</Text>
+            )
+          }
         />
       </View>
       <TextInputComp onSend={handleOnSend} isLoading={false} />
