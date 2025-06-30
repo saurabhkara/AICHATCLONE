@@ -24,7 +24,8 @@ export default function ChatRoom() {
     }, 100);
     return () => clearTimeout(sid);
   }, [chatItem?.messages]);
-  const handleOnSend = async (message: string) => {
+
+  const handleOnSend = async (message: string, imageBase64?: string | null) => {
     if (!chatItem) {
       return;
     }
@@ -33,6 +34,7 @@ export default function ChatRoom() {
       id: Date.now().toString(),
       role: "user",
       message: message,
+      ...(imageBase64 && { image: imageBase64 }),
     });
     const previousResponseId =
       chatItem.messages[chatItem.messages.length - 1]?.responseId;
@@ -43,6 +45,7 @@ export default function ChatRoom() {
         body: JSON.stringify({
           message,
           previousResponseId,
+          image: imageBase64,
         }),
       });
 

@@ -12,7 +12,17 @@ const openai = new OpenAI({
 
 
 export async function POST(request: Request) {
-    const { message, previousResponseId } = await request.json();
+    const { message, previousResponseId, image } = await request.json();
+    let messageContent = message;
+    if (image) {
+        messageContent = [
+            { role: 'user', content: message },
+            {
+                role: 'user',
+                content: [{ type: 'input_image', image_url: image }]
+            }
+        ]
+    }
 
     try {
         const response = await openai.responses.create({
